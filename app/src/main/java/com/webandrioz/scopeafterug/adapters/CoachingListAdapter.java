@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.webandrioz.scopeafterug.BooksActivity;
 import com.webandrioz.scopeafterug.BranchesActivity;
@@ -59,15 +60,25 @@ public class CoachingListAdapter  extends ArrayAdapter<String> {
         TextView buyonline= (TextView) convertView.findViewById(R.id.website);
 
         TextView name= (TextView) convertView.findViewById(R.id.contact);
-        author.setText(books.get(position).getWebsite());
-        name.setText(books.get(position).getName()+"\n"+books.get(position).getAbout()+"\n"+books.get(position).getAddress());
-        buyonline.setText(books.get(position).getConatct());
+        buyonline.setText(books.get(position).getWebsite());
+        author.setText(books.get(position).getName()+"\n\n"+books.get(position).getAbout()+"\n"+books.get(position).getAddress());
+        name.setText(books.get(position).getConatct());
 
         Button map= (Button) convertView.findViewById(R.id.map);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", Float.valueOf(books.get(position).getLatitude()),Float.valueOf(books.get(position).getLongitude()));
+                float lat=0,lon=0;
+
+                try{
+                     lat=Float.valueOf(books.get(position).getLatitude());
+                     lon=Float.valueOf(books.get(position).getLongitude());
+                }catch (Exception e){
+
+
+                    Toast.makeText(con, "Rohan correct N&E in Latitiude and Longitude.", Toast.LENGTH_SHORT).show();
+                }
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f",lon ,lat);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 con.startActivity(intent);
 

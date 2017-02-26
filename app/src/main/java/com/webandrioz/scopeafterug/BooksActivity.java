@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListViewCompat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,6 +41,18 @@ public class BooksActivity extends AppCompatActivity {
         listView= (ListView) findViewById(R.id.bookListView);
         id=getIntent().getStringExtra("id");
         getBooks(id);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     public void getBooks(final String id){
         String REGISTER_URL= Constants.BASE_URL+ Constants.BOOKS;

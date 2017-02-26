@@ -9,7 +9,16 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
         android:id="@+id/coachingListView">
     </ListView>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/citySpinner"
+
+        >
+
+    </Spinner>
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.webandrioz.scopeafterug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -38,6 +39,17 @@ public class BranchesActivity extends AppCompatActivity {
         id=getIntent().getStringExtra("id");
         gridView= (GridView) findViewById(R.id.branchGridView);
         getBranches(id);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     public void getBranches(final String id){
         String REGISTER_URL= Constants.BASE_URL+ Constants.BRANCHES_URL;

@@ -2,6 +2,7 @@ package com.webandrioz.scopeafterug;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.webandrioz.scopeafterug.constants.Constants;
 
 import org.json.JSONException;
@@ -29,9 +37,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener{
 
     private  final String TAG = getClass().getName();
+    private static final int RC_SIGN_IN = 9001;
+
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +53,23 @@ public class SignInActivity extends AppCompatActivity {
         final EditText password= (EditText) findViewById(R.id.password);
         TextView forgotPassword= (TextView) findViewById(R.id.forgotPassword);
         TextView signUp= (TextView) findViewById(R.id.signupText);
+        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
 
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +95,7 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this, "All Field Is Mandatory.", Toast.LENGTH_SHORT).show();
                     
                 }else{
-                signIncall("ASA",email.getText().toString(),password.getText().toString());
+                signIncall("ASA",email.getText().toString(),password.getText().toString(),Constants.CUSTOM_SIGNUP);
 
 
                 }
@@ -75,7 +104,7 @@ public class SignInActivity extends AppCompatActivity {
         
         
     }
-    public void signIncall(final String name, final String email, final String password){
+    public void signIncall(final String name, final String email, final String password, final String type){
         String REGISTER_URL= Constants.BASE_URL+ Constants.LOGIN_URL;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
                 new Response.Listener<String>() {
@@ -113,7 +142,7 @@ public class SignInActivity extends AppCompatActivity {
                 params.put("name",name);
                 params.put("password",password);
                 params.put("email", email);
-                params.put("type",Constants.CUSTOM_SIGNUP);
+                params.put("type",type);
                 return params;
             }
 
@@ -202,5 +231,34 @@ public class SignInActivity extends AppCompatActivity {
 
         // show it
         alertDialog.show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Toast.makeText(this, acct.getDisplayName()+acct.getEmail(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "handleSignInResult: "+acct.getDisplayName()+acct.getEmail());
+            signIncall(acct.getDisplayName(),acct.getEmail(),"",Constants.GOOGLE_SIGNUP);
+        } else {
+            // Signed out, show unauthenticated UI.
+//            updateUI(false);
+            Toast.makeText(this, "Signout", Toast.LENGTH_SHORT).show();
+        }
     }
 }

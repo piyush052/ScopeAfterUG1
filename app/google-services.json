@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "177865027189",
+    "project_id": "firebase-scopeafterug"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177865027189:android:cca0eb4d947e6090",
+        "android_client_info": {
+          "package_name": "com.webandrioz.scopeafterug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177865027189-o699iaj5blf10mdc8g7lv7rd5k9kvvnr.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "177865027189-rq6nrud0hrjhl1spo880jvvkfofn49kr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.webandrioz.scopeafterug",
+            "certificate_hash": "9b395dcb598053d19bdae4821c24c21b99069418"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByDPzhgPvrJ1rNyeQgv7EW1MEjaS6jvhk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,7 +8,7 @@ public class Constants {
 
     public static final String BASE_URL="http://apis.scopeafterug.xyz/";
     public static final String FB_SIGNUP="FB";
-    public static final String GOOGLE_SIGNUP="GOOGLE";
+    public static final String GOOGLE_SIGNUP="google";
     public static final String CUSTOM_SIGNUP="custom";
     public static final String CUSTOM_SIGNUP_URL="customsignup.php";
     public static final String DOMAIN_URL="domain.php";

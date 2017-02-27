@@ -68,9 +68,20 @@
         android:text="New Member? Sign up here"
         tools:layout_editor_absoluteX="107dp"
         android:textColor="@color/colorPrimary"
-        android:layout_marginTop="97dp"
         app:layout_constraintTop_toBottomOf="@+id/signInButton"
-        android:layout_alignTop="@+id/signInButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/signInButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp" />
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signInButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp" />
+
 
 </RelativeLayout>
